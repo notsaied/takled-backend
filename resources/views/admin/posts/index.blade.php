@@ -7,13 +7,13 @@
         <div class="card-body px-4 py-3">
             <div class="row align-items-center">
                 <div class="col-9">
-                    <h4 class="fw-semibold mb-8">قائمة الاقسام</h4>
+                    <h4 class="fw-semibold mb-8">قائمة المقالات</h4>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <a class="text-muted text-decoration-none" href="{{ route('dash.home') }}">الرئيسية</a>
                             </li>
-                            <li class="breadcrumb-item" aria-current="page">قائمة الاقسام</li>
+                            <li class="breadcrumb-item" aria-current="page">قائمة المقالات</li>
                         </ol>
                     </nav>
                 </div>
@@ -30,36 +30,65 @@
     <div class="product-list">
         <div class="card">
 
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+            <div class="card card-body">
+                <div class="row">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                 </div>
+                <div class="row">
+                    <div class="col-md-4 col-xl-3">
 
-
-            @endif
+                    </div>
+                    <div
+                        class="col-md-8 col-xl-9 text-end d-flex justify-content-md-end justify-content-center mt-3 mt-md-0">
+                        <a href="javascript:void(0)" onclick="showModal('add','')" id="btn-add-item"
+                            class="btn btn-primary d-flex align-items-center">
+                            <i class="ti ti-plus text-white me-1 fs-5"></i> اضافة
+                        </a>
+                    </div>
+                </div>
+            </div>
 
             <div class="table-responsive border rounded">
                 <table class="table align-middle text-nowrap mb-0">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
+                            <th scope="col">الصورة</th>
                             <th scope="col">العنوان</th>
                             <th scope="col">اجراء</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($sections as $section)
-                            <tr id="ele_{{ $section->id }}">
+                        @forelse($posts as $post)
+                            <tr id="ele_{{ $post->id }}">
                                 <td>{{ $loop->iteration }}</td>
 
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="ms-3">
-                                            <h6 id="name" class="mb-0 fs-4">{{ $section->title }}</h6>
+                                            <img width="40" src="{{ $post->first_image() }}" alt="">
+                                        </div>
+                                    </div>
+                                </td>
+
+
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <h6 id="name" class="mb-0 fs-4">{{ $post->title }}</h6>
                                         </div>
                                     </div>
                                 </td>
@@ -74,7 +103,7 @@
                                     <!-- Edit Icon -->
                                     <a class="fs-6 text-muted ms-2" href="javascript:void(0)" data-bs-toggle="tooltip"
                                         data-bs-placement="top" data-bs-title="تعديل"
-                                        onclick="showModal('edit', {{ $section }})">
+                                        onclick="showModal('edit', {{ $post }})">
                                         <i class="ti ti-pencil"></i>
                                     </a>
 
@@ -84,7 +113,7 @@
                             <tr id="empty">
 
                                 <td colspan="4">
-                                    Nothing to show
+                                    لا يوجد مقالات
                                 </td>
 
                             </tr>
@@ -96,7 +125,7 @@
 
             <div class="d-flex mt-2">
                 <div class="mx-auto">
-                    {{ $sections->links('pagination::bootstrap-4') }}
+                    {{ $posts->links('pagination::bootstrap-4') }}
                 </div>
             </div>
 
@@ -135,6 +164,15 @@
             $('#new-modal').modal('show');
         }
 
+
+        function addImage() {
+            $('#item-images').append(`
+            <div class="mb-3">
+                <input type="file" class="form-control" id="image" name="images[]" >
+            </div>
+            `);
+        }
+
         function modalContent(type, data) {
             console.log(data);
 
@@ -142,9 +180,9 @@
             let url = '';
 
             if (type === 'add') {
+                url = "{{ route('admin.posts.store') }}";
             } else if (type === 'edit') {
-                // Ensure the URL is correct by combining the route and data.id properly
-                url = `{{ route('admin.sections.update', '') }}/${data.id}`;
+                url = `{{ route('admin.posts.update', '') }}/${data.id}`;
             }
 
             return `
@@ -156,13 +194,38 @@
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">الوصف</label>
-                <textarea class="form-control" id="description" name="description" required >${data.description || ''}</textarea>
+                <textarea id="description" name="description" required class="form-control">${data.description || ''}</textarea>
             </div>
-                        <div class="mb-3">
-                <label for="image" class="form-label">الصورة</label>
-                <input type="file" class="form-control" id="image" name="image" >
+            <div class="mb-3">
+                <label for="date" class="form-label">التاريخ</label>
+                <input type="text" class="form-control" id="date" name="date" required value="${data.date || ''}">
             </div>
-            <button class="btn btn-primary">تعديل</button>
+            <div class="mb-3">
+                <label for="address" class="form-label">المكان</label>
+                <input type="text" class="form-control" id="address" name="address" required value="${data.address || ''}">
+            </div>
+            <div class="mb-3">
+                <label for="author" class="form-label">المؤلف</label>
+                <input type="text" class="form-control" id="author" name="author" required value="${data.author || ''}">
+            </div>
+
+
+
+             <div class="mb-3" id="item-images">
+
+        <div class="img mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" class="form-control" id="image" name="images[]">
+
+        </div>
+    </div>
+
+    <div class="add-image text-end">
+            <button class="btn btn-info" type="button" onclick="addImage()">+</button>
+        </div>
+
+
+            <button class="btn btn-primary">حفظ</button>
         </form>
     `;
         }

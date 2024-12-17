@@ -11,14 +11,13 @@ use Illuminate\Support\Facades\Storage;
 class SectionController extends Controller
 {
     public function index(){
-        $sections = Section::paginate(20);
+        $sections = Section::latest()->paginate(20);
         return view('admin.sections.index', compact('sections'));
     }
 
 
     public function update(Request $request, Section $section)
     {
-        // التحقق من البيانات
         $data = $request->validate([
             "title"       => "required",
             "description" => "required",
@@ -26,7 +25,6 @@ class SectionController extends Controller
         ]);
 
 
-        // تحديث البيانات النصية
         $section->update([
             "title"       => $data["title"],
             "description" => $data["description"],
@@ -36,16 +34,20 @@ class SectionController extends Controller
 
 
         if ($request->hasFile("image")) {
-            if ($section->images) {
-                Storage::disk('public')->delete($section->images->first()->path);
+            $existingImage = $section->images->first();
+
+            if ($existingImage && $existingImage->path != null) {
+                Storage::disk('public')->delete($existingImage->path);
             }
+
             $randomFilename = Str::random(10) . '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = $request->file("image")->storeAs("sections",$randomFilename, "public");
+            $imagePath = $request->file("image")->storeAs("sections", $randomFilename, "public");
 
             $section->images()->updateOrCreate([], [
                 'path' => $imagePath,
             ]);
         }
+
 
         return to_route("admin.sections.index")->with("success", "تم تحديث القسم بنجاح");
     }

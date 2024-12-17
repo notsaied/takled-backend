@@ -53,7 +53,18 @@
                 <span>
                     <i class="ti ti-receipt"></i>
                 </span>
-                <span class="hide-menu">Sections</span>
+                <span class="hide-menu">الاقسام</span>
+            </a>
+        </li>
+
+
+        <li class="sidebar-item">
+            <a class="sidebar-link {{ request()->is('*posts*') ? 'active' : '' }}"
+                href="{{ route('admin.posts.index') }}" aria-expanded="false">
+                <span>
+                    <i class="ti ti-receipt"></i>
+                </span>
+                <span class="hide-menu">المقالات</span>
             </a>
         </li>
 

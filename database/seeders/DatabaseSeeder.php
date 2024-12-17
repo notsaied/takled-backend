@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             DefaultSuperAdminSeed::class,
-            SectionSeeder::class
+            SectionSeeder::class,
+            PostSeeder::class
         ]);
     }
 

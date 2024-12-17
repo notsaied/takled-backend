@@ -10,4 +10,14 @@ class Post extends Model
     use HasImages;
 
     protected $guarded = [];
+
+
+
+    public function first_image(){
+        $existingImage = $this->images->first();
+        if ($existingImage && $existingImage->path != null) {
+            return asset('storage/' . $existingImage->path);
+        }
+        return null;
+    }
 }

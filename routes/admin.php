@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\BarberController;
 use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\FeedbackController;
-use App\Http\Controllers\Admin\SectionController;
 
 Route::get("ec-admin", "HomeController@index")->name("dash.home");
 
@@ -38,6 +39,22 @@ Route::group([
 
     Route::post("/{section}",[SectionController::class,'update'])->name('update');
 });
+
+
+Route::group([
+    'prefix' => '/posts',
+    'middleware' => 'auth:admins',
+    'as' => 'admin.posts.'
+],function(){
+    Route::get('/',[PostController::class,'index'])->name('index');
+
+    Route::post('/',[PostController::class,'store'])->name('store');
+
+    Route::post("/update/{post}",[PostController::class,'update'])->name('update');
+
+    Route::post("/delete/{post}",[PostController::class,'destroy'])->name('delete');
+});
+
 
 
 

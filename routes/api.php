@@ -18,18 +18,8 @@ Route::get('/user', function (Request $request) {
 
 Route::get("all-date", [FullDateController::class, "index"]);
 
-Route::get("barbers", [BarberController::class, "index"]);
-
-Route::get("barbers-bookings", [BarberController::class, "barberWithBookings"]);
-
 
 Route::post("feedback", [FeedbackController::class, 'store']);
 
 
 
-Route::get("/bookings", [BookingController::class, 'index']);
-Route::post("bookings", [BookingController::class, 'store']);
-
-Route::post("telegram/webhook", [TelegramController::class, 'webhook']);
-
-Route::get("services", [ServicesController::class, "index"]);
