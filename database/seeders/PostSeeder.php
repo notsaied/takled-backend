@@ -92,27 +92,20 @@ class PostSeeder extends Seeder
         foreach ($posts as $index => $post) {
             $post = Post::create($post);
 
-            // مسار الصورة
             $sourceImagePath = public_path('posts_image_seeder/' . $index . '.jpg');
 
-            // التأكد من وجود الصورة
             if (!File::exists($sourceImagePath)) {
-                continue; // تجاهل هذه الصورة لو مش موجودة
+                continue;
             }
 
-            // قراءة محتوى الصورة
             $fileContent = File::get($sourceImagePath);
 
-            // استخراج امتداد الصورة
             $extension = pathinfo($sourceImagePath, PATHINFO_EXTENSION);
 
-            // إنشاء اسم عشوائي
             $randomFilename = Str::random(10) . '.' . $extension;
 
-            // حفظ الصورة في storage/app/public/posts
             Storage::disk('public')->put("posts/{$randomFilename}", $fileContent);
 
-            // حفظ مسار الصورة في متغير
             $imagePath = "posts/{$randomFilename}";
 
             $post->images()->create([
