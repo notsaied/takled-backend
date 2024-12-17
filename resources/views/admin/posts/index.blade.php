@@ -95,16 +95,25 @@
 
 
                                 <td>
-
+                                    <!-- Trash Icon -->
                                     <a class="fs-6 text-muted ms-2" href="javascript:void(0)" data-bs-toggle="tooltip"
-                                        data-bs-placement="top" data-bs-title="عرض">
-                                        <i class="ti ti-eye"></i>
+                                        data-bs-placement="top" data-bs-title="Trash"
+                                        onclick="remove({{ $post->id }});">
+                                        <i class="ti ti-trash"></i>
                                     </a>
+
                                     <!-- Edit Icon -->
                                     <a class="fs-6 text-muted ms-2" href="javascript:void(0)" data-bs-toggle="tooltip"
                                         data-bs-placement="top" data-bs-title="تعديل"
                                         onclick="showModal('edit', {{ $post }})">
                                         <i class="ti ti-pencil"></i>
+                                    </a>
+
+                                    <!-- View Icon -->
+
+                                    <a class="fs-6 text-muted ms-2" href="javascript:void(0)" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" data-bs-title="عرض">
+                                        <i class="ti ti-eye"></i>
                                     </a>
 
                                 </td>
@@ -230,7 +239,29 @@
     `;
         }
 
-
-
+        function remove(id) {
+            Swal.fire({
+                title: 'Are you sure ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, I am sure!',
+                cancelButtonText: "No, cancel it!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }).then((result) => {
+                if (result['isConfirmed']) {
+                    $.ajax({
+                        method: 'POST',
+                        url: `{{ route('admin.posts.delete', '') }}/${id}`,
+                        success: () => {
+                            $('#ele_' + id).remove();
+                        },
+                        error: () => {
+                            toastr.error('Error submitting the form. Please try again.');
+                        }
+                    });
+                }
+            })
+        }
     </script>
 @endsection

@@ -87,5 +87,8 @@ class PostController extends Controller
         return redirect()->route("admin.posts.index")->with("success", "تم التعديل بنجاح");
     }
 
-    public function destroy(Post $post) {}
+    public function destroy(Post $post) {
+        $post->delete();
+        return redirect()->route("admin.posts.index")->with("success", "تم الحذف بنجاح");
+    }
 }
