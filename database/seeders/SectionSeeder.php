@@ -17,7 +17,7 @@ class SectionSeeder extends Seeder
 
         for($i = 1; $i <= $sectionNum; $i++){
             Section::create([
-                'name' => 'فقرة '.$i
+                'name' => 'القسم '.$i
             ]);
         }
     }

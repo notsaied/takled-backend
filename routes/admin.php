@@ -36,7 +36,7 @@ Route::group([
 ],function(){
     Route::get('/',[SectionController::class,'index'])->name('index');
 
-    Route::post("/",[SectionController::class,'update'])->name('update');
+    Route::post("/{section}",[SectionController::class,'update'])->name('update');
 });
 
 

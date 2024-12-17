@@ -7,13 +7,13 @@
         <div class="card-body px-4 py-3">
             <div class="row align-items-center">
                 <div class="col-9">
-                    <h4 class="fw-semibold mb-8">Services list</h4>
+                    <h4 class="fw-semibold mb-8">قائمة الاقسام</h4>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a class="text-muted text-decoration-none" href="{{ route('dash.home') }}">Home</a>
+                                <a class="text-muted text-decoration-none" href="{{ route('dash.home') }}">الرئيسية</a>
                             </li>
-                            <li class="breadcrumb-item" aria-current="page">Services list</li>
+                            <li class="breadcrumb-item" aria-current="page">قائمة الاقسام</li>
                         </ol>
                     </nav>
                 </div>
@@ -30,79 +30,41 @@
     <div class="product-list">
         <div class="card">
 
-            <div class="card card-body">
-                <div class="row">
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-                    @if (session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-                </div>
 
-            </div>
 
             <div class="table-responsive border rounded">
                 <table class="table align-middle text-nowrap mb-0">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Actions</th>
+                            <th scope="col">الاسم</th>
+                            <th scope="col">اجراء</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($sections as $section)
-                            <tr id="ele_{{ $service->id }}">
+                            <tr id="ele_{{ $section->id }}">
                                 <td>{{ $loop->iteration }}</td>
 
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="ms-3">
-                                            <h6 id="name" class="mb-0 fs-4">{{ $service->name }}</h6>
-                                        </div>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="ms-3">
-                                            <h6 id="name" class="mb-0 fs-4">{{ $service->price }}</h6>
-                                        </div>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="ms-3">
-                                            <h6 id="name" class="mb-0 fs-4">{{ $service->duration }}</h6>
+                                            <h6 id="name" class="mb-0 fs-4">{{ $section->name }}</h6>
                                         </div>
                                     </div>
                                 </td>
 
 
-
-
                                 <td>
-                                    <!-- Trash Icon -->
-                                    <a class="fs-6 text-muted" href="javascript:void(0)" data-bs-toggle="tooltip"
-                                        data-bs-placement="top" data-bs-title="Trash"
-                                        onclick="remove({{ $service->id }});">
-                                        <i class="ti ti-trash"></i>
+
+                                    <a class="fs-6 text-muted ms-2" href="javascript:void(0)" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" data-bs-title="عرض">
+                                        <i class="ti ti-eye"></i>
                                     </a>
-
                                     <!-- Edit Icon -->
                                     <a class="fs-6 text-muted ms-2" href="javascript:void(0)" data-bs-toggle="tooltip"
-                                        data-bs-placement="top" data-bs-title="Edit"
-                                        onclick="showModal('edit', {{ $service }})">
+                                        data-bs-placement="top" data-bs-title="تعديل"
+                                        onclick="showModal('edit', {{ $section }})">
                                         <i class="ti ti-pencil"></i>
                                     </a>
 
@@ -124,7 +86,7 @@
 
             <div class="d-flex mt-2">
                 <div class="mx-auto">
-                    {{ $services->links('pagination::bootstrap-4') }}
+                    {{ $sections->links('pagination::bootstrap-4') }}
                 </div>
             </div>
 
@@ -141,7 +103,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Services</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">تعديل القسم</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -171,65 +133,24 @@
             let url = '';
 
             if (type === 'add') {
-                url = "{{ route('admin.services.store') }}";
             } else if (type === 'edit') {
                 // Ensure the URL is correct by combining the route and data.id properly
-                url = `{{ route('admin.services.update', '') }}/${data.id}`;
+                url = `{{ route('admin.sections.update', '') }}/${data.id}`;
             }
 
             return `
         <form action="${url}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="${data.name || ''}">
+                <label for="name" class="form-label">الاسم</label>
+                <input type="text" class="form-control" id="name" name="name" required value="${data.name || ''}">
             </div>
-
-            <div class="mb-3">
-                <label for="price" class="form-label">Price</label>
-                <input type="text" class="form-control" id="price" name="price" value="${data.price || ''}">
-            </div>
-
-            <div class="mb-3">
-                <label for="duration" class="form-label">Duration</label>
-                <input type="text" class="form-control" id="duration" name="duration" value="${data.duration || ''}">
-            </div>
-
-            <button class="btn btn-primary">Submit</button>
+            <button class="btn btn-primary">تعديل</button>
         </form>
     `;
         }
 
 
 
-
-
-
-
-
-        function remove(id) {
-            Swal.fire({
-                title: 'Are you sure ?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, I am sure!',
-                cancelButtonText: "No, cancel it!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }).then((result) => {
-                if (result['isConfirmed']) {
-                    $.ajax({
-                        method: 'POST',
-                        url: `{{ route('admin.services.delete', '') }}/${id}`,
-                        success: () => {
-                            $('#ele_' + id).remove();
-                        },
-                        error: () => {
-                            toastr.error('Error submitting the form. Please try again.');
-                        }
-                    });
-                }
-            })
-        }
     </script>
 @endsection
