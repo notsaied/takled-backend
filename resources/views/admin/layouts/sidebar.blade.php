@@ -48,12 +48,12 @@
 
 
         <li class="sidebar-item">
-            <a class="sidebar-link {{ request()->is('*barbers*') ? 'active' : '' }}"
-                href="{{ route('admin.barbers.index') }}" aria-expanded="false">
+            <a class="sidebar-link {{ request()->is('*sections*') ? 'active' : '' }}"
+                href="{{ route('admin.sections.index') }}" aria-expanded="false">
                 <span>
                     <i class="ti ti-receipt"></i>
                 </span>
-                <span class="hide-menu">Barbers</span>
+                <span class="hide-menu">Sections</span>
             </a>
         </li>
 
@@ -79,15 +79,7 @@
             </a>
         </li>
 
-        <li class="sidebar-item">
-            <a class="sidebar-link {{ request()->is('*bookings*') ? 'active' : '' }}"
-                href="{{ route('admin.bookings.index') }}" aria-expanded="false">
-                <span>
-                    <i class="ti ti-receipt"></i>
-                </span>
-                <span class="hide-menu">Bookings</span>
-            </a>
-        </li>
+
 
 
 

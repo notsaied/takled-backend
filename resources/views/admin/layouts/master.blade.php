@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-bs-theme="@yield('theme', 'light')" data-color-theme="Orange_Theme" data-layout="vertical">
+<html lang="en" dir="ltr" data-bs-theme="@yield('theme', 'light')" data-color-theme="Purple_Theme   " data-layout="vertical">
 <head>
     @include('layouts.head')
     <title>@yield('title', 'Dashboard')</title>
@@ -27,7 +27,7 @@
                 <div class="app-header with-horizontal">@include('layouts.horizontal-header')</div>
             </header>
             <!-- Header End -->
-            
+
             <aside class="left-sidebar with-horizontal">
                 @include('layouts.horizontal-sidebar')
             </aside>

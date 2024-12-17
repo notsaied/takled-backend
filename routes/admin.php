@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\BarberController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\FeedbackController;
+use App\Http\Controllers\Admin\SectionController;
+
 Route::get("ec-admin", "HomeController@index")->name("dash.home");
 
 
@@ -26,26 +28,17 @@ Route::group([
 
 });
 
+
 Route::group([
-    'prefix' => '/barbers',
+    'prefix' => '/sections',
     'middleware' => 'auth:admins',
-    'as' => 'admin.barbers.'
+    'as' => 'admin.sections.'
 ],function(){
-    Route::get('/',[BarberController::class,'index'])->name('index');
+    Route::get('/',[SectionController::class,'index'])->name('index');
 
-    Route::get('/create',[BarberController::class,'create'])->name('create');
-
-
-    Route::post('/store',[BarberController::class,'store'])->name('store');
-
-    Route::get('/edit/{barber}',[BarberController::class,'edit'])->name('edit');
-
-
-
-    Route::post('/{barber}',[BarberController::class,'update'])->name('update');
-
-    Route::post('/delete/{barber}',[BarberController::class,'destroy'])->name('delete');
+    Route::post("/",[SectionController::class,'update'])->name('update');
 });
+
 
 
 Route::group([
@@ -73,16 +66,7 @@ Route::group([
     Route::post('/delete/{service}',[ServiceController::class,'destroy'])->name('delete');
 });
 
-Route::group([
-    'prefix' => '/bookings',
-    'middleware' => 'auth:admins',
-    'as' => 'admin.bookings.'
-],function(){
-    Route::get('/',[BookingController::class,'index'])->name('index');
 
-    Route::post('/update',[BookingController::class,'update'])->name(name: 'update');
-
-});
 
 
 

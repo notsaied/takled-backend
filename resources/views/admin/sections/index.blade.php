@@ -7,13 +7,13 @@
         <div class="card-body px-4 py-3">
             <div class="row align-items-center">
                 <div class="col-9">
-                    <h4 class="fw-semibold mb-8">Barbers list</h4>
+                    <h4 class="fw-semibold mb-8">Services list</h4>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <a class="text-muted text-decoration-none" href="{{ route('dash.home') }}">Home</a>
                             </li>
-                            <li class="breadcrumb-item" aria-current="page">Barbers list</li>
+                            <li class="breadcrumb-item" aria-current="page">Services list</li>
                         </ol>
                     </nav>
                 </div>
@@ -32,30 +32,22 @@
 
             <div class="card card-body">
                 <div class="row">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     @if (session('success'))
                         <div class="alert alert-success">
                             {{ session('success') }}
                         </div>
-
                     @endif
                 </div>
-                <div class="row">
-                    <div class="col-md-4 col-xl-3">
-                        <form class="position-relative">
-                            <input type="text" class="form-control product-search ps-5" name="q" id="input-search"
-                                placeholder="Search ..." value="{{ request('q') }}">
-                            <i
-                                class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
-                        </form>
-                    </div>
-                    <div
-                        class="col-md-8 col-xl-9 text-end d-flex justify-content-md-end justify-content-center mt-3 mt-md-0">
-                        <a href="{{route('admin.barbers.create')}}"  id="btn-add-item"
-                            class="btn btn-primary d-flex align-items-center">
-                            <i class="ti ti-plus text-white me-1 fs-5"></i> Add
-                        </a>
-                    </div>
-                </div>
+
             </div>
 
             <div class="table-responsive border rounded">
@@ -64,42 +56,53 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Name</th>
-                            <th scope="col">Telegram ID</th>
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($barbers as $barber)
-                            <tr data-info="{{ $barber }}" id="ele_{{ $barber->id }}">
+                        @forelse($sections as $section)
+                            <tr id="ele_{{ $service->id }}">
                                 <td>{{ $loop->iteration }}</td>
+
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <div class="">
-                                            <h6 id="name" class="mb-0 fs-4">{{ $barber->name }}</h6>
+                                        <div class="ms-3">
+                                            <h6 id="name" class="mb-0 fs-4">{{ $service->name }}</h6>
                                         </div>
                                     </div>
                                 </td>
+
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <div class="">
-                                            <h6 id="name" class="mb-0 fs-4">{{ $barber->telegram_id }}</h6>
+                                        <div class="ms-3">
+                                            <h6 id="name" class="mb-0 fs-4">{{ $service->price }}</h6>
                                         </div>
                                     </div>
                                 </td>
+
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <h6 id="name" class="mb-0 fs-4">{{ $service->duration }}</h6>
+                                        </div>
+                                    </div>
+                                </td>
+
+
 
 
                                 <td>
                                     <!-- Trash Icon -->
                                     <a class="fs-6 text-muted" href="javascript:void(0)" data-bs-toggle="tooltip"
                                         data-bs-placement="top" data-bs-title="Trash"
-                                        onclick="remove({{ $barber->id }});">
+                                        onclick="remove({{ $service->id }});">
                                         <i class="ti ti-trash"></i>
                                     </a>
 
                                     <!-- Edit Icon -->
-                                    <a class="fs-6 text-muted ms-2" href="{{ route('admin.barbers.edit', $barber->id) }}" data-bs-toggle="tooltip"
+                                    <a class="fs-6 text-muted ms-2" href="javascript:void(0)" data-bs-toggle="tooltip"
                                         data-bs-placement="top" data-bs-title="Edit"
-                                        onclick="">
+                                        onclick="showModal('edit', {{ $service }})">
                                         <i class="ti ti-pencil"></i>
                                     </a>
 
@@ -121,7 +124,7 @@
 
             <div class="d-flex mt-2">
                 <div class="mx-auto">
-                    {{ $barbers->links('pagination::bootstrap-4') }}
+                    {{ $services->links('pagination::bootstrap-4') }}
                 </div>
             </div>
 
@@ -138,7 +141,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Barber</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Services</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -168,10 +171,10 @@
             let url = '';
 
             if (type === 'add') {
-                url = "{{ route('admin.barbers.store') }}";
+                url = "{{ route('admin.services.store') }}";
             } else if (type === 'edit') {
                 // Ensure the URL is correct by combining the route and data.id properly
-                url = `{{ route('admin.barbers.update', '') }}/${data.id}`;
+                url = `{{ route('admin.services.update', '') }}/${data.id}`;
             }
 
             return `
@@ -181,14 +184,17 @@
                 <label for="name" class="form-label">Name</label>
                 <input type="text" class="form-control" id="name" name="name" value="${data.name || ''}">
             </div>
+
             <div class="mb-3">
-                <label for="image" class="form-label">Image</label>
-                <input type="file" class="form-control" id="image" name="image">
+                <label for="price" class="form-label">Price</label>
+                <input type="text" class="form-control" id="price" name="price" value="${data.price || ''}">
             </div>
-                        <div class="mb-3">
-                <label for="image" class="form-label">Image</label>
-                <input type="file" class="form-control" id="image" name="image">
+
+            <div class="mb-3">
+                <label for="duration" class="form-label">Duration</label>
+                <input type="text" class="form-control" id="duration" name="duration" value="${data.duration || ''}">
             </div>
+
             <button class="btn btn-primary">Submit</button>
         </form>
     `;
@@ -214,7 +220,7 @@
                 if (result['isConfirmed']) {
                     $.ajax({
                         method: 'POST',
-                        url: `{{ route('admin.barbers.delete', '') }}/${id}`,
+                        url: `{{ route('admin.services.delete', '') }}/${id}`,
                         success: () => {
                             $('#ele_' + id).remove();
                         },

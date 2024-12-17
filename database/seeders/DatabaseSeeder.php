@@ -17,10 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             DefaultSuperAdminSeed::class,
-            ServiceSeeder::class,
-            BarberSeeder::class,
-            BookingSeeder::class
-
+            SectionSeeder::class
         ]);
     }
 
