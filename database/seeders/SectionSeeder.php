@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Section;
-use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use App\Models\Section;
 
 class SectionSeeder extends Seeder
 {
@@ -17,7 +17,8 @@ class SectionSeeder extends Seeder
 
         for($i = 1; $i <= $sectionNum; $i++){
             Section::create([
-                'name' => 'القسم '.$i
+                'title' => 'العنوان '.$i,
+                'description' => 'الوصف '.$i
             ]);
         }
     }

@@ -52,23 +52,6 @@ Route::group([
 });
 
 
-Route::group([
-    'prefix' => '/services',
-    'middleware' => 'auth:admins',
-    'as' => 'admin.services.'
-],function(){
-    Route::get('/',[ServiceController::class,'index'])->name('index');
-
-    Route::post('/store',[ServiceController::class,'store'])->name('store');
-
-    Route::post('/{service}',[ServiceController::class,'update'])->name('update');
-
-    Route::post('/delete/{service}',[ServiceController::class,'destroy'])->name('delete');
-});
-
-
-
-
 
 
 Route::group([
@@ -79,9 +62,6 @@ Route::group([
     Route::get('/','ConfigController@index')->name('index');
     Route::post('/update','ConfigController@update')->name('update');
 });
-
-
-
 
 
 

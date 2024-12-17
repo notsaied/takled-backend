@@ -58,15 +58,7 @@
         </li>
 
 
-        <li class="sidebar-item">
-            <a class="sidebar-link {{ request()->is('*services*') ? 'active' : '' }}"
-                href="{{ route('admin.services.index') }}" aria-expanded="false">
-                <span>
-                    <i class="ti ti-receipt"></i>
-                </span>
-                <span class="hide-menu">Services</span>
-            </a>
-        </li>
+
 
 
         <li class="sidebar-item">

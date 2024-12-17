@@ -30,14 +30,24 @@
     <div class="product-list">
         <div class="card">
 
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
 
+
+            @endif
 
             <div class="table-responsive border rounded">
                 <table class="table align-middle text-nowrap mb-0">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">الاسم</th>
+                            <th scope="col">العنوان</th>
                             <th scope="col">اجراء</th>
                         </tr>
                     </thead>
@@ -49,7 +59,7 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="ms-3">
-                                            <h6 id="name" class="mb-0 fs-4">{{ $section->name }}</h6>
+                                            <h6 id="name" class="mb-0 fs-4">{{ $section->title }}</h6>
                                         </div>
                                     </div>
                                 </td>
@@ -142,8 +152,16 @@
         <form action="${url}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
-                <label for="name" class="form-label">الاسم</label>
-                <input type="text" class="form-control" id="name" name="name" required value="${data.name || ''}">
+                <label for="name" class="form-label">العنوان</label>
+                <input type="text" class="form-control" id="name" name="title" required value="${data.title || ''}">
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">الوصف</label>
+                <input type="text" class="form-control" id="description" name="description" required value="${data.description || ''}">
+            </div>
+                        <div class="mb-3">
+                <label for="image" class="form-label">الصورة</label>
+                <input type="file" class="form-control" id="image" name="image" >
             </div>
             <button class="btn btn-primary">تعديل</button>
         </form>
