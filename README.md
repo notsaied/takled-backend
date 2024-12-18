@@ -3,7 +3,7 @@
 ```bash
   1. **Clone the Project**:  
    Clone the repository using Git:
-   git clone https://github.com/notsaied/haircut-backend.git
+   git clone https://github.com/notsaied/takled-backend.git
   2. composer install 
   3. php artisan key:generate
   4. php artisan migrate --seed
@@ -31,11 +31,9 @@
   - Super admin login
      /ec-admin 
 
-  - Telegram Webhook
-     /telegram/webhook
 
   - Postman Collection 
-     https://documenter.getpostman.com/view/36197059/2sAYBaA9cj
+     https://documenter.getpostman.com/view/36197059/2sAYJ1kN3w
   
         
 ```
