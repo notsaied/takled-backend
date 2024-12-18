@@ -21,14 +21,6 @@ Route::group([
     Route::post('/logout', 'AuthController@logout')->name('logout');
 });
 
-Route::group([
-    'prefix' => '/home',
-    'middleware' => 'auth:admins',
-    'as' => 'admin.'
-],function(){
-    Route::get('/','HomeController@index')->name('home');
-
-});
 
 
 Route::group([

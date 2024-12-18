@@ -22,7 +22,7 @@ class AuthController extends Controller
 
         if (Auth::guard('admins')->attempt($credentials)) {
             // Authentication passed, redirect or respond accordingly
-            return redirect()->route('admin.home'); // Replace 'dashboard' with your intended route
+            return redirect()->route('admin.posts.index'); // Replace 'dashboard' with your intended route
         } else {
             // Authentication failed, redirect back with an error message
             return redirect()->back()
