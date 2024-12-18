@@ -21,29 +21,11 @@
 
 <nav class="sidebar-nav scroll-sidebar" data-simplebar>
     <ul id="sidebarnav">
-        <!-- ---------------------------------- -->
-        <!-- Home -->
-        <!-- ---------------------------------- -->
-        <li class="nav-small-cap">
-            <i class="ti ti-home nav-small-cap-icon fs-4"></i>
-            <span class="hide-menu">Home</span>
-        </li>
-        <!-- ---------------------------------- -->
-        <!-- Dashboard -->
-        <!-- ---------------------------------- -->
-        <li class="sidebar-item">
-            <a class="sidebar-link {{ request()->is('*home*') ? 'active' : '' }}" href="{{ route('admin.home') }}"
-                aria-expanded="false">
-                <span>
-                    <i class="ti ti-dashboard"></i>
-                </span>
-                <span class="hide-menu">Dashboard</span>
-            </a>
-        </li>
+
 
         <li class="nav-small-cap">
             <i class="ti ti-briefcase nav-small-cap-icon fs-4"></i>
-            <span class="hide-menu">Management</span>
+            <span class="hide-menu">ادارة</span>
         </li>
 
 
@@ -73,12 +55,12 @@
 
 
         <li class="sidebar-item">
-            <a class="sidebar-link {{ request()->is('*feedbacks*') ? 'active' : '' }}"
-                href="{{ route('admin.feedbacks.index') }}" aria-expanded="false">
+            <a class="sidebar-link {{ request()->is('*contact-us*') ? 'active' : '' }}"
+                href="{{ route('admin.contact-us.index') }}" aria-expanded="false">
                 <span>
                     <i class="ti ti-receipt"></i>
                 </span>
-                <span class="hide-menu">Feedbacks</span>
+                <span class="hide-menu">اتصل بنا</span>
             </a>
         </li>
 

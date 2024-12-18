@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ContactUsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\BarberController;
@@ -59,13 +60,15 @@ Route::group([
 
 
 Route::group([
-    'prefix' => '/feedbacks',
+    'prefix' => '/contact-us',
     'middleware' => 'auth:admins',
-    'as' => 'admin.feedbacks.'
+    'as' => 'admin.contact-us.'
 ],function(){
-    Route::get('/',[FeedbackController::class,'index'])->name('index');
+    Route::get('/',[ContactUsController::class,'index'])->name('index');
 
-    Route::post('/delete/{feedback}',[FeedbackController::class,'destroy'])->name('delete');
+    Route::post('/delete/{contactUs}',[ContactUsController::class,'destroy'])->name('delete');
+
+    Route::post('/update/{contactUs}',[ContactUsController::class,'update'])->name('update');
 });
 
 

@@ -20,4 +20,13 @@ class Post extends Model
         }
         return null;
     }
+
+
+    public function all_images(){
+        $images = [];
+        foreach ($this->images as $image) {
+            $images[] = asset('storage/' . $image->path);
+        }
+        return $images;
+    }
 }

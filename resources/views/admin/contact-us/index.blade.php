@@ -7,13 +7,13 @@
         <div class="card-body px-4 py-3">
             <div class="row align-items-center">
                 <div class="col-9">
-                    <h4 class="fw-semibold mb-8">Feedbacks</h4>
+                    <h4 class="fw-semibold mb-8">قائمة اتصل بنا</h4>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <a class="text-muted text-decoration-none" href="{{ route('dash.home') }}">Home</a>
                             </li>
-                            <li class="breadcrumb-item" aria-current="page">Feedbacks</li>
+                            <li class="breadcrumb-item" aria-current="page">قائمة اتصل بنا</li>
                         </ol>
                     </nav>
                 </div>
@@ -33,13 +33,22 @@
             <div class="card card-body">
 
                 <div class="row">
-                    <div class="col-md-4 col-xl-3">
+                    @if ($errors->any())
+                        @foreach ($errors->all() as $error)
+                            <div class="alert alert-danger">
+                                <ul>
+                                    <li>{{ $error }}</li>
+                                </ul>
+                            </div>
+                        @endforeach
 
-                    </div>
-                    <div
-                        class="col-md-8 col-xl-9 text-end d-flex justify-content-md-end justify-content-center mt-3 mt-md-0">
+                    @endif
 
-                    </div>
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -50,34 +59,35 @@
                             <th scope="col">#</th>
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Phone</th>
+                            <th scope="col">Message</th>
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($feedbacks as $feedback)
-                            <tr data-info="{{ $feedback }}" id="ele_{{ $feedback->id }}">
+                        @forelse($allContactUs as $contactUs)
+                            <tr id="ele_{{ $contactUs->id }}">
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <div class="ms-3">
-                                            <h6 id="name" class="mb-0 fs-4">{{ $feedback->name }}</h6>
+                                        <div class="">
+                                            <h6 id="name" class="mb-0 fs-4">{{ $contactUs->name }}</h6>
                                         </div>
                                     </div>
                                 </td>
 
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <div class="ms-3">
-                                            <h6 id="name" class="mb-0 fs-4">{{ $feedback->email }}</h6>
+                                        <div class="">
+                                            <h6 id="name" class="mb-0 fs-4">{{ $contactUs->email }}</h6>
                                         </div>
                                     </div>
                                 </td>
 
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <div class="ms-3">
-                                            <h6 id="name" class="mb-0 fs-4">{{ $feedback->phone }}</h6>
+                                        <div class="">
+                                            <h6 id="name" class="mb-0 fs-4">{{ \Str::limit($contactUs->message, 20) }}
+                                            </h6>
                                         </div>
                                     </div>
                                 </td>
@@ -87,14 +97,13 @@
                                     <!-- Trash Icon -->
                                     <a class="fs-6 text-muted" href="javascript:void(0)" data-bs-toggle="tooltip"
                                         data-bs-placement="top" data-bs-title="Trash"
-                                        onclick="remove({{ $feedback->id }});">
+                                        onclick="remove({{ $contactUs->id }});">
                                         <i class="ti ti-trash"></i>
                                     </a>
 
                                     <!-- Edit Icon -->
-                                    <a class="fs-6 text-muted ms-2"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit"
-                                        onclick="showModal({{ json_encode($feedback) }})">
+                                    <a class="fs-6 text-muted ms-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-title="Edit" onclick="showModal({{ json_encode($contactUs) }})">
                                         <i class="fa fa-eye"></i>
                                     </a>
 
@@ -116,7 +125,7 @@
 
             <div class="d-flex mt-2">
                 <div class="mx-auto">
-                    {{ $feedbacks->links('pagination::bootstrap-4') }}
+                    {{ $allContactUs->links('pagination::bootstrap-4') }}
                 </div>
             </div>
 
@@ -133,7 +142,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Feedback</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">اتصل بنا</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -153,51 +162,64 @@
 
 
     <script>
-
-
         function showModal(data) {
-            console.log(data);
+            // console.log(data);
 
             $('#new-modal').modal('show');
 
-            $('#new-modal .modal-body').html(feedbackHtml(data));
+            $('#new-modal .modal-body').html(modalContent(data));
 
         }
 
-        function feedbackHtml(data) {
-            return `  <div class="mb-3">
-                        <h4>Name :</h4>
-                        <p>${data.name}</p>
-                    </div>
-                    <div class="mb-3">
-                        <h4>Phone :</h4>
-                        <p>${data.phone}</p>
-                    </div>
-                    <div class="mb-3 ">
-                        <h4>Email :</h4>
-                        <p>${data.email}</p>
-                    </div>
-                    <div class="mb-3">
-                        <h4>Message :</h4>
-                        <p>${data.message}</p>
-                    </div>`
+        function modalContent(data) {
+            console.log(data);
+
+            let method = 'post';
+            url = `{{ route('admin.contact-us.update', '') }}/${data.id}`;
+
+
+            return `
+           <div class="mb-3">
+                <h4>الاسم :</h4>
+                <p>${data.name}</p>
+            </div>
+            <div class="mb-3">
+                <h4>البريد الالكتروني :</h4>
+                <p>${data.email}</p>
+            </div>
+            <div class="mb-3">
+                <h4>الرسالة :</h4>
+                <p>${data.message}</p>
+            </div>
+        <form action="${url}" method="post" enctype="multipart/form-data">
+            @csrf
+
+            <div class="mb-3">
+                <h4>المتابعة :</h4>
+                <textarea class="form-control" id="follow_up" name="follow_up">${data.follow_up || ''}</textarea>
+            </div>
+
+            <button class="btn btn-primary">تعديل</button>
+        </form>
+    `;
         }
+
 
 
         function remove(id) {
             Swal.fire({
-                title: 'Are you sure ?',
+                title: 'هل انت متأكد ؟',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Yes, I am sure!',
-                cancelButtonText: "No, cancel it!",
+                confirmButtonText: 'نعم',
+                cancelButtonText: "لا",
                 closeOnConfirm: false,
                 closeOnCancel: false
             }).then((result) => {
                 if (result['isConfirmed']) {
                     $.ajax({
                         method: 'POST',
-                        url: `{{ route('admin.feedbacks.delete', '') }}/${id}`,
+                        url: `{{ route('admin.contact-us.delete', '') }}/${id}`,
                         success: () => {
                             $('#ele_' + id).remove();
                         },
