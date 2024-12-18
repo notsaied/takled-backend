@@ -11,7 +11,15 @@ class FullDataController extends Controller
 {
     public function index()
     {
-        $sections = Section::get();
+        $sections = Section::latest()->with('images')->get()->map(function ($section) {
+            return [
+                'id' => $section->id,
+                'title' => $section->title,
+                'description' => $section->description,
+                'image' => $section->first_image(),
+            ];
+        });
+
         $posts = Post::latest()->with('images')->get()->map(function ($post) {
             return [
                 'id' => $post->id,
