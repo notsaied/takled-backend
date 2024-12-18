@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
+use App\Models\Image;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class PostController extends Controller
@@ -90,5 +91,18 @@ class PostController extends Controller
     public function destroy(Post $post) {
         $post->delete();
         return redirect()->route("admin.posts.index")->with("success", "تم الحذف بنجاح");
+    }
+
+
+    public function postImages(Post $post) {
+
+        return view('admin.posts.images', compact( 'post'));
+    }
+
+
+    public function destroyImage($id) {
+        $image = Image::find($id);
+        $image->delete();
+        return back()->with("success", "تم الحذف بنجاح");
     }
 }

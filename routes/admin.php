@@ -54,6 +54,11 @@ Route::group([
     Route::post("/update/{post}",[PostController::class,'update'])->name('update');
 
     Route::post("/delete/{post}",[PostController::class,'destroy'])->name('delete');
+
+    Route::get('/images/{post}',[PostController::class,'postImages'])->name('images');
+
+    Route::post('/images/delete/{id}',[PostController::class,'destroyImage'])->name('images.delete');
+
 });
 
 

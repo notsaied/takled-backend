@@ -79,7 +79,10 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="ms-3">
-                                            <img width="40" src="{{ $post->first_image() }}" alt="">
+                                            <a href="{{route("admin.posts.images",$post)}}">
+                                                <img width="40" src="{{ $post->first_image() }}" alt="">
+
+                                            </a>
                                         </div>
                                     </div>
                                 </td>
