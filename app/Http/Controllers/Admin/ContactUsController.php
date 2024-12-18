@@ -14,7 +14,6 @@ class ContactUsController extends Controller
     }
 
     public function update(Request $request, ContactUs $contactUs){
-        // dd($request->all());
         $data = $request->validate([
             "follow_up" => "nullable",
         ]);
