@@ -10,7 +10,9 @@
   5. npm install
   6. npm run dev and npm run build
   7. php artisan storage:link
-  8. add TELEGRAM_BOT_TOKEN in .env file
+  8. add mailer setup in env file
+  9. add CONTACT_US_EMAIL in env file to get notification after user fill contact us form
+
 ```
 ## Good to know
 
